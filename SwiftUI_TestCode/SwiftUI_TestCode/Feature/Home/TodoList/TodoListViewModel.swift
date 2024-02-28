@@ -42,7 +42,7 @@ extension TodoListViewModel {
         todos.append(todo)
     }
     
-    func naviRightButtonAction() { //navi 우측 버튼 액션 (편집)
+    func naviRightButtonTabbed() { //navi 우측 버튼 액션 (편집)
         if isEditTodoMode {
             if removeTodos.isEmpty {
                 isEditTodoMode = false
