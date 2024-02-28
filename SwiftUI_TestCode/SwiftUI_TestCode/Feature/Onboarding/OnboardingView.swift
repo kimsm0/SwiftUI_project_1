@@ -9,9 +9,29 @@ import SwiftUI
 
 struct OnboardingView: View {
     @StateObject private var onboardingViewModel = OnboardingViewModel()
+    @StateObject private var pathModel = PathModel()
+    
     var body: some View {
         // TODO: - 화면 전환 구현 필요
-        OnboardingContentView(onboardingViewModel: onboardingViewModel)
+        
+        NavigationStack(path: $pathModel.paths, root: {
+            OnboardingContentView(onboardingViewModel: onboardingViewModel)
+                .navigationDestination(for: PathType.self, destination: { pathType in
+                    switch pathType {
+                    case .homeView:
+                        HomeView()
+                            .navigationBarBackButtonHidden(true)
+                    case .todoView:
+                        TodoView()
+                            .navigationBarBackButtonHidden(true)
+                    case .memoView(let _):
+                        MemoView()
+                            .navigationBarBackButtonHidden(true)
+                        
+                    }
+                })
+        })
+        .environmentObject(pathModel)
     }
 }
 
@@ -25,11 +45,13 @@ private struct OnboardingContentView: View {
     fileprivate var body: some View {
     
         VStack {
-            // 온보딩 셀리스트 뷰 (상단)
             OnboardingListCellView(onboardingViewModel: onboardingViewModel)
             
-            // 시작버튼 뷰
+            Spacer()
+            
+            StartButtonView()
         }
+        .edgesIgnoringSafeArea(.top) //상단 safe area 무시.
     }
 }
 
@@ -78,7 +100,6 @@ private struct OnboardingTabContentsView: View {
             Image(onboardingContent.imageFileName)
                 .resizable()
                 .scaledToFit()
-        
             HStack{
                 Spacer()
                 
@@ -104,6 +125,28 @@ private struct OnboardingTabContentsView: View {
     }
 }
 
+private struct StartButtonView: View {
+    @EnvironmentObject private var pathModel: PathModel
+    
+    fileprivate var body: some View {
+        Button(action: {
+            pathModel.paths.append(.homeView)
+        }, label: {
+            HStack{
+                Text("시작하기")
+                    .font(.system(size: 16, weight: .medium))
+                    .foregroundColor(.green)
+                
+                Image("startHome")
+                    .renderingMode(.template)
+                    .foregroundColor(.green)
+            }
+        })
+        .padding(.bottom, 50)
+    }
+}
+
+// MARK: - Preview
 
 #Preview {
     OnboardingView()
