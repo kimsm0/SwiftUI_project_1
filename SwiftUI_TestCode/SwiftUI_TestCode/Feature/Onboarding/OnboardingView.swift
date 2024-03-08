@@ -11,12 +11,14 @@ struct OnboardingView: View {
     @StateObject private var onboardingViewModel = OnboardingViewModel()
     @StateObject private var pathModel = PathModel()
     @StateObject private var todoListViewModel = TodoListViewModel()
+    @StateObject private var memoListViewModel = MemoListViewModel()
     
     var body: some View {
         NavigationStack(path: $pathModel.paths, root: {
             //OnboardingContentView(onboardingViewModel: onboardingViewModel)
-            TodoListView()
-                .environmentObject(todoListViewModel)
+            //TodoListView()
+            MemoListView()
+                .environmentObject(memoListViewModel)
                 .navigationDestination(for: PathType.self, destination: { pathType in
                     switch pathType {
                     case .homeView:
@@ -26,9 +28,13 @@ struct OnboardingView: View {
                         TodoView()
                             .navigationBarBackButtonHidden(true)
                             .environmentObject(todoListViewModel)
-                    case .memoView(_):
-                        MemoView()
-                            .navigationBarBackButtonHidden(true)
+                    case let .memoView(isWriteMode, memo):
+                        MemoView(memoViewModel: isWriteMode ?
+                            .init(memo: .init(title: "", content: "", date: Date())) :
+                                .init(memo: memo ?? .init(title: "", content: "", date: Date())), isCreateMode: isWriteMode )
+                        .navigationBarBackButtonHidden(true)
+                        .environmentObject(memoListViewModel)
+                        
                     }
                 })
         })

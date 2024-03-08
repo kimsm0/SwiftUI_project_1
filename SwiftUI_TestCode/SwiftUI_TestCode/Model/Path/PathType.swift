@@ -10,5 +10,5 @@ import Foundation
 enum PathType: Hashable {
     case homeView
     case todoView
-    case memoView(isCreatedMode: Bool)
+    case memoView(isCreatedMode: Bool, memo: Memo?)
 }
