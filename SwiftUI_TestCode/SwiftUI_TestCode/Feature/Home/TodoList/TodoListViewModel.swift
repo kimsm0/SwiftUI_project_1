@@ -48,6 +48,7 @@ extension TodoListViewModel {
                 isEditTodoMode = false
             }else {
                 //편집 닫을건지 확인 알럿
+                showAlertRemoveTodo = true 
             }
         }else{
             isEditTodoMode = true
@@ -67,11 +68,13 @@ extension TodoListViewModel {
         }
     }
     
-    func removeBtnTabbed(){
-        todos.removeAll(where: {
-            removeTodos.contains($0) //전체 리스트에서 삭제하기로 체크한 항목만 삭제
-        })
-        removeTodos = []
+    func removeBtnTabbed(isConfirm: Bool){
+        if isConfirm {
+            todos.removeAll(where: {
+                removeTodos.contains($0) //전체 리스트에서 삭제하기로 체크한 항목만 삭제
+            })
+            removeTodos = []
+        }        
         isEditTodoMode = false        
     }
 }

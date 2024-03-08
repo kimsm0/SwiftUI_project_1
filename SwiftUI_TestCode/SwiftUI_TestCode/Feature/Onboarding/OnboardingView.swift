@@ -10,12 +10,13 @@ import SwiftUI
 struct OnboardingView: View {
     @StateObject private var onboardingViewModel = OnboardingViewModel()
     @StateObject private var pathModel = PathModel()
+    @StateObject private var todoListViewModel = TodoListViewModel()
     
     var body: some View {
-        // TODO: - 화면 전환 구현 필요
-        
         NavigationStack(path: $pathModel.paths, root: {
-            OnboardingContentView(onboardingViewModel: onboardingViewModel)
+            //OnboardingContentView(onboardingViewModel: onboardingViewModel)
+            TodoListView()
+                .environmentObject(todoListViewModel)
                 .navigationDestination(for: PathType.self, destination: { pathType in
                     switch pathType {
                     case .homeView:
@@ -24,10 +25,10 @@ struct OnboardingView: View {
                     case .todoView:
                         TodoView()
                             .navigationBarBackButtonHidden(true)
-                    case .memoView(let _):
+                            .environmentObject(todoListViewModel)
+                    case .memoView(_):
                         MemoView()
                             .navigationBarBackButtonHidden(true)
-                        
                     }
                 })
         })
@@ -43,9 +44,8 @@ private struct OnboardingContentView: View {
         self.onboardingViewModel = onboardingViewModel
     }
     fileprivate var body: some View {
-    
         VStack {
-            OnboardingListCellView(onboardingViewModel: onboardingViewModel)
+            OnboardingTopTabView(onboardingViewModel: onboardingViewModel)
             
             Spacer()
             
@@ -57,8 +57,8 @@ private struct OnboardingContentView: View {
 
 
 // MARK: - 온보딩 셀 리스트 뷰.
-
-private struct OnboardingListCellView: View {
+//상단 이미지+텍스트 영역 뷰
+private struct OnboardingTopTabView: View {
     @ObservedObject private var onboardingViewModel: OnboardingViewModel
     @State private var selectedIndex: Int
     
@@ -66,8 +66,8 @@ private struct OnboardingListCellView: View {
         self.onboardingViewModel = onboardingViewModel
         self.selectedIndex = selectedIndex
     }
+    
     fileprivate var body: some View {
-        
         TabView(selection: $selectedIndex,
                 content:  {
                 //각각의 셀

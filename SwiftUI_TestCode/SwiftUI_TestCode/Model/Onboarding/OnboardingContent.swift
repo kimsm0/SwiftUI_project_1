@@ -20,6 +20,4 @@ struct OnboardingContent: Hashable {
         self.title = title
         self.subTitle = subTitle
     }
-    
-    
 }

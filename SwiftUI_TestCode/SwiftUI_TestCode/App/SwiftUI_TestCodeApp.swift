@@ -12,7 +12,7 @@ struct SwiftUI_TestCodeApp: App {
 
     var body: some Scene {
         WindowGroup {
-
+            OnboardingView()
         }
     }
 }

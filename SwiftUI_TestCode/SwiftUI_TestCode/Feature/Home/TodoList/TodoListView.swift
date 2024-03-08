@@ -20,7 +20,7 @@ import SwiftUI
 struct TodoListView: View {
     @EnvironmentObject private var pathModel: PathModel
     @EnvironmentObject private var todoListViewModel: TodoListViewModel
-    
+
     var body: some View {
         //zstack으로 플로팅 버튼을 구성한다.
         ZStack{
@@ -58,11 +58,12 @@ struct TodoListView: View {
                isPresented: $todoListViewModel.showAlertRemoveTodo,
                actions: {
             Button("삭제", role: .destructive, action: {
-                todoListViewModel.removeBtnTabbed()
+                todoListViewModel.removeBtnTabbed(isConfirm: true)
             })
-            Button("취소", role: .cancel, action: {})
+            Button("취소", role: .cancel, action: {
+                todoListViewModel.removeBtnTabbed(isConfirm: false)
+            })
         })
-        
     }
 }
 
@@ -158,7 +159,7 @@ private struct TodoCellView: View {
             HStack {
                 if !todoListViewModel.isEditTodoMode { //체크박스 노출 필요
                     Button(action: { todoListViewModel.selectedBoxTabbed(todo) }, label: {
-                        todo.selected ? Image("selectedBox") : Image("unselectedBox")
+                        todo.selected ? Image("selectedBox") : Image("unSelectedBox")
                     })
                 }
                 
@@ -166,6 +167,7 @@ private struct TodoCellView: View {
                     Text(todo.title)
                         .font(.system(size: 16))
                         .foregroundColor(.black)
+                        .strikethrough(todo.selected) //선택되면 취소선
                     
                     Text(todo.convertedDayAndTime)
                         .font(.system(size: 16))
@@ -180,7 +182,7 @@ private struct TodoCellView: View {
                         isRemoveSelected.toggle()
                         todoListViewModel.todoRemoveSelectedBoxTabbed(todo)
                     }, label: {
-                        isRemoveSelected ? Image("selectedBox") : Image("unselectedBox")
+                        isRemoveSelected ? Image("selectedBox") : Image("unSelectedBox")
                     })
                 }
             }
