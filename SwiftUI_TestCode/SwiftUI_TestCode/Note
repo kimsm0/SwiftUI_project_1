@@ -1,0 +1,50 @@
+
+💡 AVFoundation
+= Audiovisual assets, control device camera, process audio, audio interaction
+= 시청각 asset, 카메라 장치 컨트롤, 오디오 처리, 오디오 관련 인터렉션 처리
+
+👉 AVFoundation은 Core에 포함되어 있음. UI 처리에 어려움 => AVKit 제공.
+
+AVAsset
+= 시간이 지정된 시청각 미디어를 지정하는 객체
+= 퀵타임 동영상, mp3오디오 파일과 같은 "파일" 기반 미디어, HLS 를 사용해 스트리밍 된 미디어를 모델링 ( HTTP LIVE Streaming )
+
+- 트랙 속성을 비동기적으로 로드
+
+👉 AVPlayer
+= Interface to control the player's
+= 미디어 asset의 재생/타이밍을 관리하는 컨트롤러 객체.
+= "재생"할 때 사용! , 한번에 하나의 미디어만 관리.
+= 비시각적 객체
+-> AVKit, AVPlayerLayer 방식을 사용하여 UI 노출.
+
+👉 AVPlayerItem
+= timing/presentation state of an asset during playback
+= 시간, 현재 미디어의 상태정보를 담은 객체
+
+AVAsset : 미디어의 모든 정보
+AVPlayerItem: 시간 경과에 따른 "현재" 상태 정보.
+
+👉 AVAudioRecorder
+= 오디오 데이터를 파일에 녹음하는 객체.
+1. 시스템 입력장치를 통해 오디오 녹음
+2. 사용자가 중지 또는 지정된 시간까지 녹음
+3. 일시정지 및 재개
+4. 녹음 수준 측정 데이터에 접근
+
+prepareToRecord() : 파일 생성 및 녹음을 위한 시스템 준비
+record() : 녹음 시작 / 재개
+record(atTime:) : 특정 시간 부터 녹음 시작
+record(forDuration:) : 표시된 시간동안 녹음
+record(atTime:, forDuration:) : 특정 시간 부터 표시간 시간 동안.
+pause(): 일시 중지
+stop: 중지
+deleteRecording: 녹음된 오디오 파일 삭제
+isRecording: 녹음 중 판별
+
+👉 AVAudioEngine
+녹음된 오디오에 고급 기능 사용
+ex, 목소리 변조와 같은 기능 제공
+
+
+
